@@ -1,4 +1,5 @@
 const express = require("express");
+const serverlessExpress = require("@vendia/serverless-express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const fileUpload = require("express-fileupload");
@@ -21,6 +22,8 @@ app.use(
 app.use("/api/user", userRouter);
 app.use("/api/post", postRouter);
 app.use("/api/upload", uploadRouter);
+app.use("/", (req, res) => res.send(`root`));
+app.use("/hello", (req, res) => res.send(`hello`));
 
 // routes
 
@@ -40,3 +43,5 @@ mongoose
 app.listen(PORT, () => {
   console.log("server起動");
 });
+
+exports.handler = serverlessExpress({ app });
