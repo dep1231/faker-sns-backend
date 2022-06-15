@@ -8,9 +8,9 @@ const { readdirSync } = require("fs");
 const userRouter = require("./routes/User");
 const postRouter = require("./routes/Post");
 const uploadRouter = require("./routes/Upload");
+const PORT = process.env.PORT;
 
 const app = express();
-const PORT = process.env.PORT;
 
 app.use(express.json());
 app.use(cors("http://localhost:3000"));
@@ -44,4 +44,4 @@ app.listen(PORT, () => {
   console.log("server起動");
 });
 
-exports.handler = serverlessExpress({ app });
+module.exports = app;
