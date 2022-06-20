@@ -134,11 +134,11 @@ exports.follow = async (req, res) => {
       !user.followings.includes(currentUser._id)
     ) {
       await currentUser.updateOne({
-        $push: { followers: user._id },
+        $push: { followings: user._id },
       });
 
       await user.updateOne({
-        $push: { followings: currentUser._id },
+        $push: { followers: currentUser._id },
       });
       return res.status(200).json("フォローしました");
     } else {
@@ -159,15 +159,15 @@ exports.unfollow = async (req, res) => {
     const currentUser = await User.findById(req.body.userId);
     const user = await User.findById(req.params.id);
     if (
-      currentUser.followers.includes(user._id) &&
-      user.followings.includes(currentUser._id)
+      currentUser.followings.includes(user._id) &&
+      user.followers.includes(currentUser._id)
     ) {
       await currentUser.updateOne({
-        $pull: { followers: user._id },
+        $pull: { followings: user._id },
       });
 
       await user.updateOne({
-        $pull: { followings: currentUser._id },
+        $pull: { followers: currentUser._id },
       });
       return res.status(200).json("フォロー解除しました");
     } else {
@@ -183,7 +183,7 @@ exports.getFollowersUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
       .select("followers")
-      .populate("followers", "username picture desc");
+      .populate("followers", "username picture profile");
     return res.status(200).json({
       followers: user.followers,
     });
@@ -195,7 +195,7 @@ exports.getFollowingsUser = async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
       .select("followings")
-      .populate("followings", "username picture desc");
+      .populate("followings", "username picture profile");
     return res.status(200).json({
       followings: user.followings,
     });
