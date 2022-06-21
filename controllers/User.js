@@ -130,8 +130,8 @@ exports.follow = async (req, res) => {
     const currentUser = await User.findById(req.body.userId);
     const user = await User.findById(req.params.id);
     if (
-      !currentUser.followers.includes(user._id) &&
-      !user.followings.includes(currentUser._id)
+      !currentUser.followings.includes(user._id) &&
+      !user.followers.includes(currentUser._id)
     ) {
       await currentUser.updateOne({
         $push: { followings: user._id },
